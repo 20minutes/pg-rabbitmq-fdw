@@ -11,7 +11,7 @@ The general idea is to push any inserted / updated / deleted document in Postgre
 
 - [Multicorn](http://multicorn.org/) 1.3.x and up
 - Python 2.7 (Don't know if Python 3 works)
-- A RabbitMQ server
+- A RabbitMQ server (with exchange and queue configured)
 - A PostgreSQL server (tested under 9.5, should be fine with 9.3 & 9.4 too)
 - Be sure to have these packages installed (at least on Ubuntu): `make gcc git postgresql-server-dev-9.5 python-dev python-setuptools python-pip`
 
@@ -19,12 +19,12 @@ The general idea is to push any inserted / updated / deleted document in Postgre
 
 ```bash
 git clone https://github.com/Kozea/Multicorn /tmp/multicorn
-cd $_
+cd /tmp/multicorn
 git checkout v1.3.2
 make install
 
 git clone https://github.com/20minutes/pg-rabbitmq-fdw /tmp/pg-rabbitmq-fdw
-cd $_
+cd /tmp/pg-rabbitmq-fdw
 pip install -r requirements.txt
 python setup.py install
 ```
@@ -104,4 +104,38 @@ CREATE TRIGGER rabbitmq_update_tag
 CREATE TRIGGER rabbitmq_delete_tag
     BEFORE DELETE ON tag
     FOR EACH ROW EXECUTE PROCEDURE delete_tag();
+```
+
+## Message in RabbitMQ
+
+Here are some sample of message pushed in RabbitMQ.
+
+For an insert:
+
+```json
+{
+    "action": "insert",
+    "table": "tag",
+    "id": "c9cd5011-400a-4b06-bcc4-2e4eb62e6d87"
+}
+```
+
+For an update:
+
+```json
+{
+    "action": "update",
+    "table": "tag",
+    "id": "c9cd5011-400a-4b06-bcc4-2e4eb62e6d87"
+}
+```
+
+For a delete:
+
+```json
+{
+    "action": "delete",
+    "table": "tag",
+    "id": "c9cd5011-400a-4b06-bcc4-2e4eb62e6d87"
+}
 ```
