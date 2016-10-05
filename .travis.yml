@@ -1,0 +1,45 @@
+sudo: required
+
+cache:
+  directories:
+  - "$HOME/.cache/pip"
+
+services:
+  - docker
+  - rabbitmq
+
+language: python
+
+python:
+  - "2.7"
+
+before_install:
+  # shutdown current postgresql
+  - sudo /etc/init.d/postgresql stop
+  # install my own postgres
+  - docker build -t postgres-fdw-rabbit .
+  - docker run --name fdw_rabbit -d -p 127.0.0.1:5432:5432 postgres-fdw-rabbit
+  # wait a bit to let postgres starts
+  - sleep 10
+
+install:
+  # enabled rabbitmq_management plugin to check queue
+  - sudo rabbitmq-plugins enable rabbitmq_management
+  - sudo wget http://guest:guest@localhost:15672/cli/rabbitmqadmin -O /usr/local/bin/rabbitmqadmin
+  - sudo chmod +x /usr/local/bin/rabbitmqadmin
+  # setup exchange, queue & binding
+  - rabbitmqadmin declare exchange name=indexing type=direct
+  - rabbitmqadmin declare queue name=indexing durable=true
+  - rabbitmqadmin declare binding source=indexing destination=indexing
+  # define a test user (because rabbit will be accessed from the Docker image, guest/guest won't work)
+  - sudo rabbitmqctl add_user test test
+  - sudo rabbitmqctl set_user_tags test administrator
+  - sudo rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
+  # create test database
+  - psql -c 'create database travis_ci_test;' -U postgres -h 127.0.0.1 -p 5432
+
+script:
+  # insert extension, function & trigger
+  - psql -h 127.0.0.1 -U postgres -d travis_ci_test -f $TRAVIS_BUILD_DIR/tests/data.sql
+  - pip install -r tests/requirements.txt
+  - python setup.py test

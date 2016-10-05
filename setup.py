@@ -9,5 +9,6 @@ if __name__ == '__main__':
         author='20 Minutes',
         license='MIT',
         packages=['pg_rabbitmq'],
-        url='https://github.com/20minutes/pg-rabbitmq-fdw'
+        url='https://github.com/20minutes/pg-rabbitmq-fdw',
+        test_suite="tests"
     )
