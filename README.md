@@ -2,19 +2,19 @@
 
 [![Build Status](https://travis-ci.com/20minutes/pg-rabbitmq-fdw.svg?token=WLCcDeVWNcj6cS73wonE&branch=master)](https://travis-ci.com/20minutes/pg-rabbitmq-fdw)
 
-The general idea is to push any inserted / updated / deleted document in PostgreSQL to RabbitMQ so it can (for example) be indexed in other system.
+The general idea is to push any inserted / updated / deleted document in PostgreSQL to RabbitMQ so it can (for example) be indexed in an other system.
 
 ## Before starting
 
-- We only want to push a message in a queue for each actio. So we assume the FDW will only perform `insert` action (see functions below).
+- We only want to push a message in a queue for each action. So we assume the FDW will only perform `insert` action (see functions below).
 - We also assume the virtual host for RabbitMQ is `/`.
 
 ## Requirements
 
 - [Multicorn](http://multicorn.org/) 1.3.x and up
-- Python 2.7 (Don't know if Python 3 works)
+- Python 2.7 (don't know if Python 3 works)
 - A RabbitMQ server (with exchange and queue configured)
-- A PostgreSQL server (tested under 9.5, should be fine with 9.3 & 9.4 too)
+- A PostgreSQL server (tested under 9.5, should be fine with 9.3, 9.4 & 9.6 too)
 - Be sure to have these packages installed (at least on Ubuntu): `make gcc git postgresql-server-dev-9.5 python-dev python-setuptools python-pip`
 
 ## Installation
@@ -32,6 +32,8 @@ python setup.py install
 ```
 
 ## Usage
+
+In that example we only send minimal information about the tag (only the PK). We could imagine more fields in the foreign table, like a `data` json field. Then in the function where we index the tag, we could image a more complex SQL query that will retrieve a bunch of information and store them in the `data` field as json.
 
 ```sql
 -- Load extension
