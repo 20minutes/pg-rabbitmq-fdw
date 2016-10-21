@@ -4,8 +4,8 @@ from setuptools import setup
 if __name__ == '__main__':
     setup(
         name='pg_rabbitmq',
-        description='PostgreSQL foreign data wrapper for RabbitMQ (write only)',
-        version='0.0.1',
+        description='PostgreSQL RabbitMQ Foreign Data Wrapper (write only)',
+        version='1.0.1',
         author='20 Minutes',
         license='MIT',
         packages=['pg_rabbitmq'],
