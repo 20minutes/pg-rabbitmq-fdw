@@ -1,6 +1,6 @@
 # PostgreSQL RabbitMQ Foreign Data Wrapper
 
-[![Build Status](https://travis-ci.com/20minutes/pg-rabbitmq-fdw.svg?token=WLCcDeVWNcj6cS73wonE&branch=master)](https://travis-ci.com/20minutes/pg-rabbitmq-fdw)
+[![Build Status](https://travis-ci.org/20minutes/pg-rabbitmq-fdw.svg?branch=master)](https://travis-ci.org/20minutes/pg-rabbitmq-fdw)
 
 The general idea is to push any inserted / updated / deleted document in PostgreSQL to RabbitMQ so it can (for example) be indexed in an other system.
 
