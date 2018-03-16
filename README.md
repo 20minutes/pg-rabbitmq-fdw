@@ -11,18 +11,18 @@ The general idea is to push any inserted / updated / deleted document in Postgre
 
 ## Requirements
 
-- [Multicorn](http://multicorn.org/) 1.3.x and up
+- [Multicorn](http://multicorn.org/) 1.3.* and up
 - Python 2.7 (don't know if Python 3 works)
-- A RabbitMQ server (with exchange and queue configured)
-- A PostgreSQL server (tested under 9.5, should be fine with 9.3, 9.4 & 9.6 too)
-- Be sure to have these packages installed (at least on Ubuntu): `make gcc git postgresql-server-dev-9.5 python-dev python-setuptools python-pip`
+- A RabbitMQ server 3.6.* (with exchange and queue configured)
+- A PostgreSQL server (9.5+ & 10+)
+- Be sure to have these packages installed (at least on Ubuntu/Debian): `make gcc git postgresql-server-dev-10 python-dev python-setuptools python-pip` (adapt the `postgresql-server-dev` package to your PostgreSQL version)
 
 ## Installation
 
 ```bash
 git clone https://github.com/Kozea/Multicorn /tmp/multicorn
 cd /tmp/multicorn
-git checkout v1.3.2
+git checkout v1.3.4
 make install
 
 git clone https://github.com/20minutes/pg-rabbitmq-fdw /tmp/pg-rabbitmq-fdw
@@ -33,7 +33,8 @@ python setup.py install
 
 ## Usage
 
-In that example we only send minimal information about the tag (only the PK). We could imagine more fields in the foreign table, like a `data` json field. Then in the function where we index the tag, we could image a more complex SQL query that will retrieve a bunch of information and store them in the `data` field as json.
+In that example we only send minimal information about the tag (only the PK). We could imagine more fields in the foreign table, like a `data` json field.
+Then in the function where we index the tag, we could image a more complex SQL query that will retrieve a bunch of information and store them in the `data` field as json.
 
 ```sql
 -- Load extension
