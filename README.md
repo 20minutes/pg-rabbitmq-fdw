@@ -22,7 +22,7 @@ The general idea is to push any inserted / updated / deleted document in Postgre
 ```bash
 git clone https://github.com/Kozea/Multicorn /tmp/multicorn
 cd /tmp/multicorn
-git checkout v1.3.2
+git checkout v1.3.4
 make install
 
 git clone https://github.com/20minutes/pg-rabbitmq-fdw /tmp/pg-rabbitmq-fdw
