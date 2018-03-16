@@ -5,7 +5,7 @@ if __name__ == '__main__':
     setup(
         name='pg_rabbitmq',
         description='PostgreSQL RabbitMQ Foreign Data Wrapper (write only)',
-        version='1.0.1',
+        version='1.0.2',
         author='20 Minutes',
         license='MIT',
         packages=['pg_rabbitmq'],
